@@ -14,8 +14,8 @@ const BLACK_PAWN_DIR: [i32; 4] = [8, 16, 7, 9];
 
 #[derive(Debug)]
 pub struct ChessMove {
-    from: usize,
-    to: usize
+    pub from: usize,
+    pub to: usize
 }
 
 impl ChessMove {
@@ -99,8 +99,7 @@ impl ChessMove {
             for i in 1..8 {
                 let new_index = index as i32 + (dir * i);
                 if new_index < 64 && new_index >= 0 {
-                    if new_index % 8 == 0 || new_index % 8 == 7 {
-                        possible_moves.push(ChessMove { from: index, to: new_index as usize });
+                    if (new_index % 8 == 0 && index % 8 == 7) || (new_index % 8 == 7 && index % 8 == 0) {
                         break;
                     }
                     if let Some(piece) = board.board[new_index as usize]{

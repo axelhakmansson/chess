@@ -1,3 +1,4 @@
+use crate::chess_move::ChessMove;
 use crate::piece::Color;
 use crate::piece::PieceType;
 use crate::board::Board;
@@ -26,6 +27,9 @@ impl Game {
             sate: GameState::OnGoing,
             board: Board::standard()
         }
+    }
+    pub fn get_possible_moves(&self) -> Vec<ChessMove> {
+        ChessMove::get_possible_moves(&self.board, self.turn)
     }
 }
 
