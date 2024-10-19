@@ -25,7 +25,6 @@ impl Board {
         for i in 48..=55 {
             board[i] = Some(Piece::white_pawn());
         }
-
         board[56] = Some(Piece::white_rook());
         board[57] = Some(Piece::white_knight());
         board[58] = Some(Piece::white_bishop());
