@@ -31,6 +31,14 @@ impl Game {
     pub fn get_possible_moves(&self) -> Vec<ChessMove> {
         ChessMove::get_possible_moves(&self.board, self.turn)
     }
+
+    pub fn make_move(&mut self, mov: &ChessMove) {
+        self.board.make_move(mov);
+        match self.turn {
+            Color::White => self.turn = Color::Black,
+            _ => self.turn = Color::White
+        }
+    }
 }
 
 impl Display for Game {

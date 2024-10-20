@@ -1,9 +1,7 @@
 use crate::board::Board;
 use crate::piece::Color;
 use crate::piece::PieceType::{King, Queen, Rook, Bishop, Knight, Pawn};
-use std::fmt::{self, write, Display};
-
-
+use std::fmt::{self, Display};
 
 const BISHOP_DIR: [i32; 4] = [-9, -7, 7, 9];
 const ROOK_DIR: [i32; 4] = [-8, -1, 1, 8];
@@ -11,8 +9,7 @@ const KNIGHT_DIR: [i32; 8] = [-17, -15, -10, -6, 6, 10, 15, 17];
 const WHITE_PAWN_DIR: [i32; 4] = [-8, -16, -7, -9];
 const BLACK_PAWN_DIR: [i32; 4] = [8, 16, 7, 9];
 
-
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ChessMove {
     pub from: usize,
     pub to: usize
@@ -123,6 +120,8 @@ impl ChessMove {
             for i in 1..8 {
                 let new_index = index as i32 + (dir * i);
                 if new_index < 64 && new_index >= 0 {
+                    if index % 8 == 0 && (dir == -9 || dir == 7) { break; }
+                    if index % 8 == 7 && (dir == 9 || dir == -7) { break; }
                     if new_index % 8 == 0 || new_index % 8 == 7 {
                         possible_moves.push(ChessMove { from: index, to: new_index as usize });
                         break;
@@ -199,9 +198,7 @@ impl ChessMove {
         }
         possible_moves 
     }
-}
-
-    
+} 
 
 impl Display for ChessMove {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

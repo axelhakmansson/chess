@@ -1,5 +1,6 @@
 use std::cmp;
 
+use chess_move::ChessMove;
 use glutin_window::GlutinWindow;
 
 use opengl_graphics::{GlGraphics, GlyphCache, OpenGL, TextureSettings};
@@ -44,14 +45,14 @@ fn main() {
     let mut glyphs =
         GlyphCache::new(font, (), TextureSettings::new()).expect("Could not load font");
 
-    let mut selected: Vec<usize> = Vec::new();
+    let mut selected: Vec<ChessMove> = Vec::new();
     
     while let Some(e) = event.next(&mut window) {
         
         mouse_position = if let Some(position) = e.mouse_cursor_args() { position } else { mouse_position };
 
         if let Some(Button::Mouse(MouseButton::Left)) = e.press_args() {
-            selected = vec![];
+            
             let x: usize = cmp::min(
                 (mouse_position[0] / CELL_SIZE) as usize,
                 (SCREEN_WIDTH - 1) as usize,
@@ -63,11 +64,19 @@ fn main() {
 
             let possible = game.get_possible_moves();
 
-            for i in 0..possible.len() {
-                if possible[i].from == x + 8 * y {
-                    selected.push(possible[i].to);
+            for i in 0..selected.len() {
+                if selected[i].to == (x + y * 8) {
+                    let mov = &selected[i];
+                    game.make_move(mov);
                 }
             }
+            selected = vec![];
+            for i in 0..possible.len() {
+                if possible[i].from == x + 8 * y {
+                    selected.push(possible[i].clone());
+                }
+            }
+            
         }
 
         if let Some(args) = e.render_args() {
@@ -76,7 +85,7 @@ fn main() {
                 use graphics::clear;
                 clear([1.0; 4], g);
                 // draw board
-                render::draw_board(&c, g, &game.board, &selected, &mut glyphs);
+                render::draw_board(&c, g, &game.board, &(selected.iter().map(|x| x.to).collect()), &mut glyphs);
             });
         }
     }

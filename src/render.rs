@@ -1,7 +1,7 @@
-use graphics::{clear, Context, Ellipse, Graphics};
+use graphics::{Context, Graphics};
 use graphics::{Rectangle, Transformed};
-
 use opengl_graphics::*;
+
 use crate::board::Board;
 use crate::piece::Color;
 use crate::piece::PieceType::{King,Knight,Queen,Bishop,Rook,Pawn};
@@ -86,7 +86,6 @@ pub fn draw_board<G: Graphics<Texture = Texture>>(
                 .draw(" ", glyphs, &c.draw_state, c.transform, g)
                 .unwrap();
         }
-
         count += 1;
     }
 }
